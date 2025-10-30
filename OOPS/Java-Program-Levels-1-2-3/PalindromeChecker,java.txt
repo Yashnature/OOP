@@ -1,0 +1,109 @@
+import java.util.Scanner;
+
+public class PalindromeChecker {
+
+    // --- Logic 1: Iterative Method ---
+    /**
+     * Checks for a palindrome by comparing characters from the start and end inwards.
+     * @param text The string to check.
+     * @return true if the string is a palindrome, false otherwise.
+     */
+    public static boolean isPalindromeIterative(String text) {
+        int start = 0;
+        int end = text.length() - 1;
+
+        // Loop until the two pointers meet in the middle.
+        while (start < end) {
+            // If characters at the pointers do not match, it's not a palindrome.
+            if (text.charAt(start) != text.charAt(end)) {
+                return false;
+            }
+            // Move the pointers closer to the center.
+            start++;
+            end--;
+        }
+        return true;
+    }
+
+    // --- Logic 2: Recursive Method ---
+    /**
+     * Checks for a palindrome by recursively comparing characters from the outside in.
+     * @param text The string to check.
+     * @param start The starting index for the current check.
+     * @param end The ending index for the current check.
+     * @return true if the substring is a palindrome, false otherwise.
+     */
+    public static boolean isPalindromeRecursive(String text, int start, int end) {
+        // Base Case: If the pointers have met or crossed, all checks have passed.
+        if (start >= end) {
+            return true;
+        }
+        // If the outer characters don't match, it's not a palindrome.
+        if (text.charAt(start) != text.charAt(end)) {
+            return false;
+        }
+        // Recursive Step: Check the inner substring.
+        return isPalindromeRecursive(text, start + 1, end - 1);
+    }
+
+    // --- Logic 3: Character Array Method ---
+    /**
+     * Checks for a palindrome by comparing the original string's char array
+     * with a manually reversed char array.
+     * @param text The string to check.
+     * @return true if the string is a palindrome, false otherwise.
+     */
+    public static boolean isPalindromeCharArray(String text) {
+        char[] originalChars = text.toCharArray();
+        char[] reversedChars = reverseStringToArray(text);
+
+        // If arrays are not the same length, they can't be palindromic.
+        if (originalChars.length != reversedChars.length) {
+            return false;
+        }
+
+        // Compare each character of the original and reversed arrays.
+        for (int i = 0; i < originalChars.length; i++) {
+            if (originalChars[i] != reversedChars[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * Helper method for Logic 3: Reverses a string into a new char array.
+     * @param text The string to reverse.
+     * @return A new char array containing the reversed characters.
+     */
+    public static char[] reverseStringToArray(String text) {
+        char[] reversed = new char[text.length()];
+        for (int i = 0; i < text.length(); i++) {
+            reversed[i] = text.charAt(text.length() - 1 - i);
+        }
+        return reversed;
+    }
+
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter a string to check if it's a palindrome: ");
+        String userInput = scanner.nextLine();
+
+        System.out.println("\n--- Palindrome Check Results ---");
+
+        // Call Logic 1
+        boolean iterativeResult = isPalindromeIterative(userInput);
+        System.out.println("1. Iterative Method Result: " + iterativeResult);
+
+        // Call Logic 2
+        boolean recursiveResult = isPalindromeRecursive(userInput, 0, userInput.length() - 1);
+        System.out.println("2. Recursive Method Result: " + recursiveResult);
+
+        // Call Logic 3
+        boolean charArrayResult = isPalindromeCharArray(userInput);
+        System.out.println("3. Char Array Method Result: " + charArrayResult);
+
+        scanner.close();
+    }
+}
